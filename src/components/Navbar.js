@@ -1,11 +1,12 @@
-import { Box ,IconButton,Typography,Button,MenuItem,Menu} from '@mui/material'
+import { Box ,IconButton,Badge,Typography,Button,MenuItem,Menu} from '@mui/material'
 import React from 'react'
 import PersonIcon from '@mui/icons-material/Person';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SearchIcon from '@mui/icons-material/Search';
 import {styled} from "@mui/material/styles";
 import {Link} from "react-router-dom";
-
+import { useContext } from 'react';
+import { CartList} from '../contexts/CartProduct';
 const SearchInput=styled("input")(
   ({theme})=>({
     padding:"0 4px",border:"none",borderBottom:"solid black 1px",display:"block",
@@ -18,7 +19,7 @@ const SearchInput=styled("input")(
 )
 
 const Navbar = () => {
-
+  const {productList}= useContext(CartList);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -29,14 +30,19 @@ const Navbar = () => {
   };
 
   return (
+    <Box sx={{p:1,background:"white",border:"solid 1px #ddd"}}>
     <Box display="flex" justifyContent="space-between">
       <Link to="/" style={{textDecoration:"none"}}><Typography variant="h4" sx={{color:"black",letterSpacing:"-8px"}}>HERRY</Typography></Link>
       <Box display="flex" alignItems="center">
         <Box component="form" display="flex" alignItems="center" >
+        
         <SearchInput type="text" required  placeholder="search"/>
         <IconButton type="submit"><SearchIcon/></IconButton>
         </Box>
-        <IconButton><ShoppingCartIcon/></IconButton>
+        {productList.map(item=><p>{item}</p>)}
+        <IconButton><Badge badgeContent={4} color="primary">
+  <ShoppingCartIcon color="action" />
+</Badge></IconButton>
         <IconButton
             onClick={handleClick}
 
@@ -90,6 +96,7 @@ const Navbar = () => {
         </MenuItem>
         </Link>
       </Menu>
+      </Box>
       </Box>
     </Box>
   )
